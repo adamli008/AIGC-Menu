@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>NSAppleEventsUsageDescription</key>
+    <string>需要访问终端来执行脚本</string>
+    <key>LSApplicationCategoryType</key>
+    <string>public.app-category.developer-tools</string>
+    <key>LSMinimumSystemVersion</key>
+    <string>10.15</string>
+    <key>NSSystemAdministrationUsageDescription</key>
+    <string>需要管理员权限来执行某些操作</string>
+    <key>NSDesktopFolderUsageDescription</key>
+    <string>需要访问权限来更改桌面壁纸</string>
+    <key>CFBundleDocumentTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleTypeName</key>
+            <string>AIGC Menu Document</string>
+            <key>LSHandlerRank</key>
+            <string>Owner</string>
+        </dict>
+    </array>
+</dict>
+</plist>

@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# 使用 osascript 打开一个新的终端窗口并调用 greet 函数
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PARENT_DIR="$(dirname "$(dirname "$(dirname "$SCRIPT_DIR")")")"
+
+# 使用 osascript 打开一个新的终端窗口并执行脚本
+#osascript -e "tell application \"Terminal\" to do script \"sh '${PARENT_DIR}/gui-task3.sh'\""
+osascript -e "tell application \"Terminal\" to do script \"sh '${PARENT_DIR}/gui_full_task3.sh'\""
+
+# 使用 osascript 打开一个新的终端窗口并调用 greet 函数
+#osascript -e 'tell application "Terminal" to do script "sh /Applications/AIGC-Menu.app/Contents/Resources/newtask5.sh"'
