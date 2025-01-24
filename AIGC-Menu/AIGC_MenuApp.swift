@@ -10,12 +10,51 @@ import AppleScriptObjC
 
 @main
 struct AIGC_MenuApp: App {
+    @StateObject private var settingsManager = SettingsManager.shared
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
         }
         .commands {
-            CommandMenu("WallPaper") {
+            // 添加默认的 File 菜单
+            CommandGroup(after: .appInfo) { }
+            
+            // Settings 菜单移到 File 后面
+            CommandMenu("Settings") {
+                Menu("功能选择") {
+                    ForEach(1...6, id: \.self) { index in
+                        let isEnabled = settingsManager.enabledTasks.contains(index)
+                        Button(action: {
+                            settingsManager.toggleTask(index)
+                            // 强制刷新整个窗口
+                            NSApp.keyWindow?.contentView?.setNeedsDisplay(NSApp.keyWindow?.contentView?.bounds ?? .zero)
+                        }) {
+                            HStack {
+                                Image(systemName: isEnabled ? "checkmark.circle.fill" : "circle")
+                                    .frame(width: 20)
+                                    .foregroundColor(isEnabled ? .blue : .gray)
+                                    .id("menu-item-\(index)-\(isEnabled)")
+                                
+                                if let image = NSImage(named: "icon\(index)") {
+                                    let thumbnail = createThumbnail(from: image, size: NSSize(width: 20, height: 20))
+                                    Image(nsImage: thumbnail)
+                                        .resizable()
+                                        .frame(width: 20, height: 20)
+                                        .cornerRadius(2)
+                                }
+                                
+                                if let iconName = getIconName(for: index) {
+                                    Text(iconName)
+                                }
+                            }
+                        }
+                        .keyboardShortcut(KeyEquivalent(Character(String(index))), modifiers: .command)
+                    }
+                }
+                
+                Divider()
+                
                 Menu("设置壁纸") {
                     ForEach(1...20, id: \.self) { index in
                         Button(action: {
@@ -23,13 +62,12 @@ struct AIGC_MenuApp: App {
                         }) {
                             HStack {
                                 if let image = NSImage(named: "AIGC\(index)") {
-                                    let thumbnail = createThumbnail(from: image, size: NSSize(width: 40, height: 40))
+                                    let thumbnail = createThumbnail(from: image, size: NSSize(width: 200, height: 120))
                                     Image(nsImage: thumbnail)
                                         .resizable()
-                                        .frame(width: 40, height: 40)
-                                        .cornerRadius(4)
+                                        .frame(width: 200, height: 120)
+                                        .cornerRadius(8)
                                 }
-                                Text("AIGC\(index)")
                             }
                         }
                     }
@@ -77,6 +115,19 @@ struct AIGC_MenuApp: App {
         alert.informativeText = informative
         alert.alertStyle = .warning
         alert.runModal()
+    }
+    
+    // 添加一个辅助函数来获取图标名称
+    private func getIconName(for index: Int) -> String? {
+        let iconNames = [
+            1: "Xcode",
+            2: "MLX Fine Tuning",
+            3: "LMStudio",
+            4: "LangChain Chatchat",
+            5: "Comfyui",
+            6: "ASITOP"
+        ]
+        return iconNames[index]
     }
 }
 

@@ -182,6 +182,7 @@ struct PressableButtonStyle: ButtonStyle {
 
 struct ContentView: View {
     @StateObject private var wallpaperManager = WallpaperManager.shared
+    @StateObject private var settingsManager = SettingsManager.shared
     
     func openApp() {
         // 使用 NSWorkspace 打开应用
@@ -246,12 +247,9 @@ struct ContentView: View {
                     ],
                     spacing: 80,
                     content: {
-                        AppItem(iconName: "icon1", index: 1)
-                        AppItem(iconName: "icon2", index: 2)
-                        AppItem(iconName: "icon3", index: 3)
-                        AppItem(iconName: "icon4", index: 4)
-                        AppItem(iconName: "icon5", index: 5)
-                        AppItem(iconName: "icon6", index: 6)
+                        ForEach(Array(SettingsManager.shared.enabledTasks).sorted(), id: \.self) { index in
+                            AppItem(iconName: "icon\(index)", index: index)
+                        }
                     }
                 )
                 .padding(.horizontal, 100)
